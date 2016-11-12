@@ -11,7 +11,7 @@ io.on('connection', function(client) {
     client.on('event', function(data) {
         console.log(util.inspect(data, null, 4));
 
-        client.emit('event', 'bar');
+        client.emit('event', { text: 'welcome', data: { a: 4, b: 5, c: 6 } });
     });
 
     client.on('disconnect', function() {
