@@ -1,3 +1,4 @@
+ssl/server.*
 node_modules
 .*.swp
 *~

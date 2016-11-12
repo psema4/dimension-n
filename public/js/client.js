@@ -47,7 +47,7 @@ window.addEventListener('load', function() {
     window.appState = 0;
 
     window.jQuery = $ = require('jquery');
-    window.socket = io('http://localhost:5000');
+    window.socket = io();
 
     var bootstrap = require('bootstrap/dist/js/bootstrap')
       , style = require('../../node_modules/bootstrap/dist/css/bootstrap.css')

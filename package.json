@@ -2,7 +2,7 @@
   "name": "nko2016-sample",
   "version": "0.0.1",
   "description": "A barebones Node.js app using Express 4",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node index.js"
   },
