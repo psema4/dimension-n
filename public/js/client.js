@@ -1,5 +1,7 @@
-window.loggerLevel = 1; // max log level, will display logging messages at this
+window.loggerLevel = 2; // max log level, will display logging messages at this
                         // level or below, see log() for more details
+
+var util = require('util');
 
 /* log(string [, object]);
  *
@@ -18,6 +20,9 @@ window.log = function(msg, opts) {
     opts.level = opts.level || 1;
     opts.class = opts.class || 'log';
 
+    // FIXME: make jquery global earlier, or define this fn later
+    var $ = function(s) { return document.querySelectorAll(s); };
+
     if (opts.level <= loggerLevel) {
         if (typeof console[opts.class] === 'function') {
             var args = [msg];
@@ -26,7 +31,12 @@ window.log = function(msg, opts) {
                 opts.args.map(function(i) {  args.push(i); });
             }
 
-            console[logFn].apply(this, args);
+            console[opts.class].apply(this, args);
+
+            if (args.length === 1) {
+                args = args[0];
+            }
+            $('.debug.window textarea')[0].value += util.format(args) + "\n";
         }
     }
 }
@@ -44,24 +54,40 @@ window.addEventListener('load', function() {
     ;
 
     window.showDebug = function() {
-        $('.debug').show();
-        $('.home').hide();
-        $('.stage').hide();
+        $('.debug.window').show();
+        $('.home.window').hide();
+        $('.stage.window').hide();
     };
 
-    $('.debug button').click(function() {
-        $('.debug').hide();
-        $('.home').hide();
-        $('.stage').hide();
+    $('.debug.window button.btn-primary').click(function() {
+        socket.emit('event', { text: 'ping', data: {} });
+    });
+
+    $('.debug.window button.btn-default').click(function() {
+        $('.debug.window').hide();
+        $('.home.window').hide();
+        $('.stage.window').hide();
 
         w = (window.appState === 0) ? $('.home') : $('.stage');
         w.show();
     });
 
+    $('.stage.window button.btn-primary').click(function() {
+        $('.debug.window').show();
+        $('.home.window').hide();
+        $('.stage.window').hide();
+    });
+
+    $('.stage.window button.btn-default').click(function() {
+        $('.debug.window').hide();
+        $('.home.window').show();
+        $('.stage.window').hide();
+    });
+
     $('.home button').click(function() {
-        $('.debug').hide();
-        $('.home').hide();
-        $('.stage').show();
+        $('.debug.window').hide();
+        $('.home.window').hide();
+        $('.stage.window').show();
 
         window.appState = 1;
     });
@@ -69,10 +95,9 @@ window.addEventListener('load', function() {
 
     socket.on('connect', function() { log('connected to socket server', { level: 2 }); });
     socket.on('disconnect', function() { log('disconnected from socket server', { level: 2 }); });
-
-    socket.on('event', function(data) {
-        console.log(data);
-    });
+    socket.on('event', function(data) { log(data); });
 
     socket.emit('event', { text: 'hello', data: {} });
+    $('.loading.window').hide();
+    $('.home.window').show();
 });

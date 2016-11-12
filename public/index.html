@@ -4,15 +4,22 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>Dimension-N</title>
+
+        <link rel="icon" href="/favicon.ico?v0">
+        <link rel="stylesheet" href="/css/client.css">
     </head>
 
     <body>
-        <link rel="icon" href="/favicon.ico">
-        <link rel="stylesheet" href="/css/client.css">
+        <section class="loading window"></section>
 
         <section class="debug window">
-            <button class="btn btn-default">Close</button>
+            <center>
+                <textarea></textarea>
+                <button class="btn btn-primary">Ping Server</button>
+                <button class="btn btn-default">Close</button>
+            </center>
         </section>
 
         <section class="home window">
@@ -52,7 +59,12 @@
             <button class="btn btn-primary">Play!</button>
         </section>
 
-        <section class="stage window">Hello from Node Knockout 2016!</section>
+        <section class="stage window">
+            Hello from Node Knockout 2016!
+            <br/>
+            <button class="btn btn-primary">Debug</button>
+            <button class="btn btn-default">Close</button>
+        </section>
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/bundle.js"></script>
