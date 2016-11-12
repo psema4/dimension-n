@@ -40,9 +40,7 @@ window.addEventListener('load', function() {
 
 
     // --- socket.io tests ---
-    // window.socket = require('socket.io-client')('http://localhost:5000');
-    window.socket = require('../../node_modules/socket.io-client/socket.io.js')('http://localhost:5000');
-
+    window.socket = io('http://localhost:5000');
     socket.on('connect', function(){ log('connected to socket server'); });
     socket.on('event', function(data){ log('server event caught'); console.log(data); });
     socket.on('disconnect', function(){ log('disconnected from socket server'); });
