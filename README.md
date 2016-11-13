@@ -2,7 +2,11 @@
 
 ## About
 
-A Node Knockout 2016 entry.
+Dimension-N is a proof-of-concept strategy for packaging, distributing & hosting multiplayer web games as npm packages.
+
+"[Alpha](https://github.com/psema4/dn-game-alpha)" is currently the only available game module for Dimension-N; while not a "playable" demo, it does demonstrate how to interface with the Dimension-N server and integrate with the auto-generated game website.
+
+Dimension-N is inspired in-part by [Pine](https://github.com/psema4/pine), and is a Node Knockout 2016 entry.
 
 
 ## Running Locally
@@ -27,6 +31,11 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 
 See package.json for full details
 
+
+## Todo
+
+* Sessions still need some work; players can't yet change their player name
+* Documentation
 
 ## Credits & Attributions
 
