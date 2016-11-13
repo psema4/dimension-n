@@ -11,7 +11,9 @@ var fs = require('fs')
 //, httpsServer = https.createServer(creds, app)
 //  , io = require('socket.io')(httpServer)
   , io = require('socket.io').listen(httpServer)
-  , game = require('dn-game-alpha')
+  , config = require('./config')
+  , game = require(config.moduleName)
+  , assetsPath = util.format('%s/node_modules/%s/assets', __dirname, config.moduleName)
 ;
 
 io.on('connection', function(client) {
@@ -34,17 +36,20 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/game/name', function(req, res) { res.status(200).send(game.server.name); });
 app.get('/game/description', function(req, res) { res.status(200).send(game.server.description); });
+app.get('/game/version', function(req, res) { res.status(200).send(game.server.version); });
 
 // create endpoints for the game screenshots
 [].forEach.call(game.server.screenshots, function(screenshot) {
     var urlFragment = screenshot.url
-      , path = __dirname + '/node_modules/dn-game-alpha/' + screenshot.path
+      , path = util.format('%s/node_modules/%s/%s', __dirname, config.moduleName, screenshot.path)
     ;
 
     app.get(urlFragment, function(req, res) {
         res.status(200).sendFile(path);
     });
 });
+
+app.use('/game/assets', express.static(assetsPath));
 
 // ---- start the server(s)
 httpServer.listen(app.get('port'), function() {
