@@ -11,7 +11,7 @@ $(document).ready(function() {
     window.socket = io();
     window.site = require('./lib/site');
 
-    site.load( require('./games/alpha') );
+    site.load( require('dn-game-alpha').client );
 
     log('ready', { level: 2 });
 });

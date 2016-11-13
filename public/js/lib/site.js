@@ -9,7 +9,6 @@ module.exports = (function() {
 
     function load(game) {
         window.game = game;
-        game.reset();
     }
 
     // ---- setup site ui ----
@@ -21,7 +20,11 @@ module.exports = (function() {
 
     // `+-- debug window: close
     $('.debug.window button.btn-default').click(function() {
-        var s = (_state === 0) ? '.home.window' : '.stage.window'
+        var s = (game.isPlaying() && game.isPaused()) ? '.pause.window' :
+                (game.isPlaying()) ? '.stage.window' :
+                '.home.window'
+        ;
+
         showWindow(s);
     });
 
@@ -32,11 +35,16 @@ module.exports = (function() {
 
     // `+-- stage window: close
     $('.stage.window button.btn-default').click(function() {
-        showWindow('.home.window');
+        game.quit();
+    });
+
+    // `+-- home window: debug
+    $('.home.window button.btn-default').click(function() {
+        showWindow('.debug.window');
     });
 
     // `+-- home window: play
-    $('.home button').click(function() {
+    $('.home.window button.btn-primary').click(function() {
         game.reset();
     });
 
