@@ -36,16 +36,6 @@ module.exports = (function() {
         showWindow(s);
     });
 
-    // `+-- stage window: debug
-    $('.stage.window button.btn-primary').click(function() {
-        showWindow('.debug.window');
-    });
-
-    // `+-- stage window: close
-    $('.stage.window button.btn-default').click(function() {
-        game.quit();
-    });
-
     // `+-- home window: debug
     $('.home.window button.btn-default').click(function() {
         showWindow('.debug.window');
@@ -59,7 +49,7 @@ module.exports = (function() {
     // `+-- user window: play
     $('.user.window button.btn-success').click(function() {
         socket.emit('event', { command: 'nick', data: { username: $('#username').value } });
-        game.reset();
+        game.init();
     });
 
 
