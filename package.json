@@ -16,7 +16,8 @@
     "express": "^4.13.3",
     "jquery": "^3.1.1",
     "socket.io": "^1.5.1",
-    "socket.io-client": "^1.5.1"
+    "socket.io-client": "^1.5.1",
+    "dn-game-alpha": "git://github.com/psema4/dn-game-alpha.git"
   },
   "browserify": {
     "transform": [

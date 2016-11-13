@@ -30,22 +30,22 @@
             <div class="">
                 <div id="home-carousel" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li data-target="#home-carousel" data-slide-to="0" class=""></li>
+                        <li data-target="#home-carousel" data-slide-to="0" class="active"></li>
                         <li data-target="#home-carousel" data-slide-to="1" class=""></li>
-                        <li data-target="#home-carousel" data-slide-to="2" class="active"></li>
+                        <li data-target="#home-carousel" data-slide-to="2" class=""></li>
                     </ol>
         
                     <div class="carousel-inner" role="listbox">
                         <div class="item">
-                            <img src="/images/slide1.png" alt="First slide [1140x500]" width="100%">
+                            <img id="slide1" src="/images/slide1.png" alt="First slide [1140x500]" width="100%">
                         </div>
     
                         <div class="item">
-                            <img src="/images/slide2.png" alt="Second slide [1140x500]" width="100%">
+                            <img id="slide2" src="/images/slide2.png" alt="Second slide [1140x500]" width="100%">
                         </div>
     
                         <div class="item active">
-                            <img src="/images/slide3.png" alt="Third slide [1140x500]" width="100%">
+                            <img id="slide3" src="/images/slide3.png" alt="Third slide [1140x500]" width="100%">
                         </div>
                     </div>
         
@@ -62,9 +62,16 @@
             <div>
 
             <div class="site-content dark">
-                <h2>Dimension-N</h2>
-                <button class="btn btn-default">Debug</button>
-                <button class="btn btn-primary">Play!</button>
+                <h2>Dimension-N: <span id="game_name">Server</span></h2>
+
+                <div id="game_description">
+                    No game module specified.  Please check your configuration.
+                </div>
+
+                <div id="game_launcher" class="site controls">
+                    <button class="btn btn-default">Debug</button>
+                    <button class="btn btn-primary">Play!</button>
+                </div>
             </div>
 
             <div class="site-foot">

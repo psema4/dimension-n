@@ -9,6 +9,14 @@ module.exports = (function() {
 
     function load(game) {
         window.game = game;
+
+        $('#game_name').text(game.name);
+        $('#game_description').text(game.description);
+
+        for (var i=0; i< game.screenshots.length; i++) {
+            var url = game.screenshots[i];
+            $('#slide' + (i+1))[0].src = url;
+        }
     }
 
     // ---- setup site ui ----
@@ -57,7 +65,6 @@ module.exports = (function() {
 
     // --- site is ready ---
     socket.emit('event', { text: 'hello', data: { } });
-    showWindow('.loading.window');
     showWindow('.home.window');
 
     return {
