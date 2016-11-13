@@ -4,7 +4,10 @@
   "description": "A barebones Node.js app using Express 4",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "echo please use one of: npm run build-dev  or  npm run build-prod",
+    "build-dev": "browserify -d -o public/js/bundle.js -e public/js/client.js && uglifyjs public/js/bundle.js > public/js/bundle.min.js",
+    "build-prod": "browserify -o public/js/bundle.js -e public/js/client.js && uglifyjs public/js/bundle.js > public/js/bundle.min.js"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",

@@ -22,6 +22,22 @@
     bottom: 0px;
 }
 
+.flex {
+    display: flex;
+}
+
+.flexc {
+    flex-direction: column;
+}
+
+.flexr {
+    flex-direction: row;
+}
+
+.flexi {
+    flex: 1 1 auto;
+}
+
 .debug.window textarea {
     width: 90%;
     height: 300px;
