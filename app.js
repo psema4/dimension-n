@@ -1,9 +1,18 @@
 var fs = require('fs')
   , util = require('util')
+  , config = require('./config')
 //, key  = fs.readFileSync('ssl/server.key', 'utf8')
 //, cert = fs.readFileSync('ssl/server.crt', 'utf8')
 //, creds = { key: key, cert: cert }
   , express = require('express')
+  , session = require("express-session")({
+        secret: config.secret
+      , resave: true
+      , saveUninitialized: true
+      , cookie: {
+            maxAge: 60000
+        }
+    })
   , app = express()
   , http = require('http')
 //, https = require('https')
@@ -11,18 +20,42 @@ var fs = require('fs')
 //, httpsServer = https.createServer(creds, app)
 //  , io = require('socket.io')(httpServer)
   , io = require('socket.io').listen(httpServer)
+  , sharedsession = require("express-socket.io-session")
   , UUID = require('node-uuid')
-  , config = require('./config')
   , game = require(config.moduleName)
   , assetsPath = util.format('%s/node_modules/%s/assets', __dirname, config.moduleName)
 ;
 
+app.use(session);
+io.use(sharedsession(session, { autoSave: true }));
+
 io.on('connection', function(client) {
-    var clientId = UUID();
-    console.log('client %s connected', clientId);
+    var session = client.handshake.session
+      , clientId = session.clientId || UUID()
+      , username = session.username || 'guest_' + (Math.floor(Math.random() * 1000))
+    ;
+
+    if (!session.clientId) {
+        client.handshake.session.clientId = clientId;
+    }
+
+    if (!session.username) {
+        client.handshake.session.username = username;
+    }
+
+    console.log('client %s connected, session: %s', clientId, util.format(session));
 
     client.on('event', function(data) {
-        var res = game.server.onData(data);
+        var res = false;
+
+        if (data.command === 'nick') {
+            username = data.data.username;
+            client.handshake.session.username = username;
+            res = { command: 'namechange', data: { clientId: clientId, username: client.handshake.session.username } }
+
+        } else {
+            res = game.server.onData(data, client.handshake.session);
+        }
 
         if (res) {
             client.emit('event', res);

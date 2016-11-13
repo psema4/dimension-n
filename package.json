@@ -15,6 +15,8 @@
     "cssify": "^1.0.3",
     "dn-game-alpha": "git://github.com/psema4/dn-game-alpha.git",
     "express": "^4.13.3",
+    "express-session": "^1.14.2",
+    "express-socket.io-session": "^1.3.1",
     "jquery": "^3.1.1",
     "node-uuid": "^1.4.7",
     "socket.io": "^1.5.1",

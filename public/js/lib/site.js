@@ -53,6 +53,12 @@ module.exports = (function() {
 
     // `+-- home window: play
     $('.home.window button.btn-primary').click(function() {
+        showWindow('.user.window');
+    });
+
+    // `+-- user window: play
+    $('.user.window button.btn-success').click(function() {
+        socket.emit('event', { command: 'nick', data: { username: $('#username').value } });
         game.reset();
     });
 
@@ -60,11 +66,11 @@ module.exports = (function() {
     // ---- setup site comms ----
     socket.on('connect', function() { log('connected to socket server', { level: 2 }); });
     socket.on('disconnect', function() { log('disconnected from socket server', { level: 2 }); });
-    socket.on('event', function(data) { log(data); });
+    socket.on('event', function(data) { log(data); if (data.data.username) { $('#username')[0].value = data.data.username; } });
 
 
     // --- site is ready ---
-    socket.emit('event', { command: 'hello', data: { } });
+    socket.emit('event', { command: 'register', data: { } });
     showWindow('.home.window');
 
     return {
