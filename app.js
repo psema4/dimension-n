@@ -66,7 +66,7 @@ io.on('connection', function(client) {
         console.log('client disconnected');
     });
 
-    client.emit('event', { command: 'register', data: { clientId: clientId } });
+    client.emit('event', { command: 'welcome', data: { clientId: clientId } });
 });
 
 app.set('port', (process.env.PORT || 5000));

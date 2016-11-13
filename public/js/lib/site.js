@@ -23,7 +23,7 @@ module.exports = (function() {
 
     // `+-- debug window: ping
     $('.debug.window button.btn-primary').click(function() {
-        socket.emit('event', { text: 'ping', data: { } });
+        socket.emit('event', { command: 'ping', data: { } });
     });
 
     // `+-- debug window: close

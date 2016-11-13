@@ -5,7 +5,9 @@
 
     if (opts.level <= loggerLevel) {
         if (typeof console[opts.class] === 'function') {
-            var args = [msg];
+            var args = [msg]
+              , textarea = $('.debug.window textarea')[0]
+            ;
 
             if (opts.args) {
                 opts.args.map(function(i) {  args.push(i); });
@@ -15,7 +17,9 @@
                 args = args[0];
             }
 
-            $('.debug.window textarea')[0].value += util.format(args) + "\n";
+            textarea.value += util.format(args) + "\n";
+            textarea.scrollTop = textarea.scrollHeight;
+
             console[opts.class](args);
         }
     }

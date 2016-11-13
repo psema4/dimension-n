@@ -18,7 +18,8 @@
     display: none;
 }
 
-.window {
+.window,
+.modal-container {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -61,8 +62,6 @@
 
 .site-foot {
     background-color: #444;
-    background-image: url("/images/slide1.png");
-    background-size: cover;
     color: #888;
     height: 100px;
     line-height: 100px;
@@ -85,4 +84,8 @@
     border-radius: 4px;
     padding: 1em;
     background-color: #fff;
+}
+
+.user.window input {
+    width: 50%;
 }
