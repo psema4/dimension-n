@@ -13,11 +13,12 @@
     "bootstrap": "^3.3.7",
     "browserify": "^13.1.1",
     "cssify": "^1.0.3",
+    "dn-game-alpha": "git://github.com/psema4/dn-game-alpha.git",
     "express": "^4.13.3",
     "jquery": "^3.1.1",
+    "node-uuid": "^1.4.7",
     "socket.io": "^1.5.1",
-    "socket.io-client": "^1.5.1",
-    "dn-game-alpha": "git://github.com/psema4/dn-game-alpha.git"
+    "socket.io-client": "^1.5.1"
   },
   "browserify": {
     "transform": [

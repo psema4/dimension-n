@@ -64,7 +64,7 @@ module.exports = (function() {
 
 
     // --- site is ready ---
-    socket.emit('event', { text: 'hello', data: { } });
+    socket.emit('event', { command: 'hello', data: { } });
     showWindow('.home.window');
 
     return {

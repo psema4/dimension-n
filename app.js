@@ -11,23 +11,29 @@ var fs = require('fs')
 //, httpsServer = https.createServer(creds, app)
 //  , io = require('socket.io')(httpServer)
   , io = require('socket.io').listen(httpServer)
+  , UUID = require('node-uuid')
   , config = require('./config')
   , game = require(config.moduleName)
   , assetsPath = util.format('%s/node_modules/%s/assets', __dirname, config.moduleName)
 ;
 
 io.on('connection', function(client) {
-    console.log('client connected');
+    var clientId = UUID();
+    console.log('client %s connected', clientId);
 
     client.on('event', function(data) {
-        console.log(util.inspect(data, null, 4));
+        var res = game.server.onData(data);
 
-        client.emit('event', { text: 'welcome', data: { } });
+        if (res) {
+            client.emit('event', res);
+        }
     });
 
     client.on('disconnect', function() {
         console.log('client disconnected');
     });
+
+    client.emit('event', { command: 'register', data: { clientId: clientId } });
 });
 
 app.set('port', (process.env.PORT || 5000));
