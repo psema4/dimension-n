@@ -56,7 +56,7 @@ module.exports = (function() {
     // ---- setup site comms ----
     socket.on('connect', function() { log('connected to socket server', { level: 2 }); });
     socket.on('disconnect', function() { log('disconnected from socket server', { level: 2 }); });
-    socket.on('event', function(data) { log(data); if (data.data.username) { $('#username')[0].value = data.data.username; } });
+    socket.on('event', function(data) { if (data.data.username) { $('#username')[0].value = data.data.username; } });
 
 
     // --- site is ready ---
