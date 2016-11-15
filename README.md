@@ -9,6 +9,10 @@ Dimension-N is a proof-of-concept strategy for packaging, distributing & hosting
 Dimension-N is inspired in-part by [Pine](https://github.com/psema4/pine), and is a Node Knockout 2016 entry.
 
 
+## Architectural Overview
+
+![alt text](docs/dimension-n-overview.png "dimension-n-overview")
+
 ## Running Locally
 
 ```sh
