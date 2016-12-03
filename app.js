@@ -1,9 +1,11 @@
-var fs = require('fs')
+var serverEnv = process.env.SERVER_ENV && process.env.SERVER_ENV.match(/^prod/i) ? 'prod' : 'stage'
+
+  , fs = require('fs')
   , util = require('util')
+
   , config = require('./config')
-//, key  = fs.readFileSync('ssl/server.key', 'utf8')
-//, cert = fs.readFileSync('ssl/server.crt', 'utf8')
-//, creds = { key: key, cert: cert }
+  , statusCodes = require('./lib/status-codes')
+
   , express = require('express')
   , session = require("express-session")({
         secret: config.secret
@@ -13,18 +15,62 @@ var fs = require('fs')
             maxAge: 60000
         }
     })
-  , app = express()
+
   , http = require('http')
-//, https = require('https')
-  , httpServer = http.createServer(app)
-//, httpsServer = https.createServer(creds, app)
-//  , io = require('socket.io')(httpServer)
-  , io = require('socket.io').listen(httpServer)
+  , insecureApp = express()
+  , httpServer = http.createServer(insecureApp)
+
+  , https = require('https')
+  , httpsOpts = {
+        key: fs.readFileSync('ssl/server.key', 'utf8')
+      , cert: fs.readFileSync('ssl/server.crt', 'utf8')
+      , requestCert: serverEnv === 'prod'
+      , rejectUnauthorized: serverEnv === 'prod'
+    }
+  , app = express()
+  , httpsServer = https.createServer(httpsOpts, app)
+
+  , io = require('socket.io')(httpsServer)
   , sharedsession = require("express-socket.io-session")
   , UUID = require('node-uuid')
+
   , game = require(config.moduleName)
   , assetsPath = util.format('%s/node_modules/%s/assets', __dirname, config.moduleName)
 ;
+
+
+/*-----------------.
+ | INSECURE SERVER |--------------------------------------------------------
+ `-----------------' redirect all http requests to the secure game server */
+
+insecureApp.set('port', (process.env.PORT || 5000));
+
+insecureApp.all('*', function(req, res) {
+    var httpsPort = process.env.HTTPSPORT || 5001;
+    res.redirect(301, 'https://' + req.hostname + ':' + httpsPort + req.originalUrl);
+});
+
+httpServer.listen(insecureApp.get('port'), function() {
+    console.log("Serving http on port " + insecureApp.get('port'));
+});
+
+
+
+
+
+/*---------------.
+ | SECURE SERVER |----------------------------------------------------------
+ `---------------' game server on https                                   */
+
+app.use(function(req, res, next) {
+    req.__st = new Date();
+
+    res.on('finish', function() {
+        console.log('%s %s %s %s (%sms)', new Date().toLocaleString(), res.statusCode, statusCodes[res.statusCode], req.originalUrl, (new Date() - req.__st));
+    });
+
+    next();
+});
 
 app.use(session);
 io.use(sharedsession(session, { autoSave: true }));
@@ -69,8 +115,7 @@ io.on('connection', function(client) {
     client.emit('event', { command: 'welcome', data: { clientId: clientId } });
 });
 
-app.set('port', (process.env.PORT || 5000));
-//app.set('httpsPort', (process.env.HTTPSPORT || 5001));
+app.set('port', (process.env.HTTPSPORT || 5001));
 app.use(express.static(__dirname + '/public'));
 
 app.get('/game/name', function(req, res) { res.status(200).send(game.server.name); });
@@ -90,13 +135,6 @@ app.get('/game/version', function(req, res) { res.status(200).send(game.server.v
 
 app.use('/game/assets', express.static(assetsPath));
 
-// ---- start the server(s)
-httpServer.listen(app.get('port'), function() {
-    console.log("Serving http on port " + app.get('port'));
+httpsServer.listen(app.get('port'), function() {
+    console.log("Serving https on port " + app.get('port'));
 });
-
-/*
-httpsServer.listen(app.get('httpsPort'), function() {
-    console.log("Serving https on port " + app.get('httpsPort'));
-});
-*/
